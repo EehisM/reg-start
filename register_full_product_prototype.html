@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Register — RTB Compliance Workspace</title>
+<style>
+:root{
+  --bg:#f7f9fc;--card:#fff;--text:#101828;--muted:#667085;--line:#e4e7ec;
+  --blue:#2563eb;--blue2:#eff6ff;--dark:#101828;--dark2:#1d2939;
+  --green:#067647;--greenbg:#ecfdf3;--amber:#b54708;--amberbg:#fffaeb;
+  --red:#b42318;--redbg:#fef3f2;--purple:#6941c6;--purplebg:#f4f3ff
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);background:var(--bg)}
+button,input,select{font:inherit}
+a{text-decoration:none;color:inherit}
+.screen{display:none;min-height:100vh}.screen.active{display:block}
+.btn{border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 14px;font-weight:700;cursor:pointer}
+.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn.dark{background:var(--dark);color:#fff;border-color:var(--dark)}
+.btn.ghost{background:transparent}
+.btn:hover{filter:brightness(.98)}
+.logo{font-size:24px;font-weight:850}.logo i{font-style:normal;color:#60a5fa}
+
+/* Landing */
+.landing{background:linear-gradient(180deg,#fff,#f4f7fb)}
+.landing nav{max-width:1180px;margin:auto;padding:22px 24px;display:flex;justify-content:space-between;align-items:center}
+.navlinks{display:flex;gap:28px;color:#475467;font-size:14px;align-items:center}
+.hero{max-width:1180px;margin:auto;padding:82px 24px 72px;display:grid;grid-template-columns:1.08fr .92fr;gap:60px;align-items:center}
+.kicker{display:inline-block;background:var(--blue2);color:var(--blue);padding:6px 10px;border-radius:20px;font-size:12px;font-weight:800}
+.hero h1{font-size:55px;line-height:1.03;margin:18px 0 18px;letter-spacing:-.04em}
+.hero p{font-size:18px;color:#667085;line-height:1.65;max-width:640px}
+.heroActions{display:flex;gap:11px;margin-top:26px}
+.heroCard{background:#0f172a;border-radius:20px;padding:18px;box-shadow:0 25px 60px #10182825}
+.mock{background:#fff;border-radius:13px;overflow:hidden}
+.mockTop{background:#f8fafc;border-bottom:1px solid var(--line);padding:12px;display:flex;gap:6px}.mockTop i{width:8px;height:8px;border-radius:50%;background:#d0d5dd}
+.mockBody{display:grid;grid-template-columns:125px 1fr;min-height:390px}.mockSide{background:#101828;padding:15px}.mockLine{height:9px;border-radius:5px;background:#344054;margin-bottom:11px}.mockMain{padding:18px;background:#f7f9fc}
+.mockCards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.mini{height:70px;border:1px solid #e4e7ec;border-radius:9px;background:#fff}
+.mockTable{margin-top:12px;height:220px;background:#fff;border:1px solid #e4e7ec;border-radius:9px}
+.logos{max-width:1180px;margin:auto;padding:0 24px 65px;text-align:center;color:#98a2b3;font-size:13px}
+.features{max-width:1180px;margin:auto;padding:75px 24px}.features h2{text-align:center;font-size:34px;margin-bottom:10px}.features>p{text-align:center;color:#667085;margin-bottom:35px}
+.featureGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.feature{background:#fff;border:1px solid var(--line);border-radius:14px;padding:23px}.featureIcon{width:40px;height:40px;border-radius:10px;background:var(--blue2);display:grid;place-items:center;color:var(--blue);font-weight:800}.feature h3{margin:16px 0 8px}.feature p{color:#667085;line-height:1.55;font-size:14px}
+.cta{max-width:1130px;margin:30px auto 70px;background:#101828;color:#fff;border-radius:18px;padding:44px;display:flex;justify-content:space-between;align-items:center}.cta h2{margin:0 0 8px}.cta p{margin:0;color:#98a2b3}
+
+/* Login */
+.loginWrap{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:#fff}
+.loginLeft{padding:42px 70px;display:flex;flex-direction:column}.loginBox{max-width:420px;margin:auto;width:100%}.loginBox h1{font-size:32px;margin-bottom:8px}.loginBox p{color:#667085;margin-bottom:28px}
+.field label{font-size:12px;font-weight:800;display:block;margin:0 0 6px}.field input,.field select{width:100%;padding:11px 12px;border:1px solid #d0d5dd;border-radius:9px;margin-bottom:15px;background:#fff}
+.loginRight{background:#101828;display:grid;place-items:center;padding:55px;color:#fff}.loginRight .quote{max-width:500px}.quote h2{font-size:34px;line-height:1.25}.quote p{color:#98a2b3;line-height:1.6}
+
+/* App */
+.appShell{display:flex;min-height:100vh}.sidebar{width:255px;background:#101828;color:#98a2b3;padding:22px 14px;position:fixed;inset:0 auto 0 0;display:flex;flex-direction:column}
+.sidebar .logo{color:#fff;padding:5px 12px 28px}.workspace{font-size:11px;text-transform:uppercase;letter-spacing:.08em;padding:0 12px 9px;color:#667085}
+.navitem{padding:11px 12px;margin:3px 0;border-radius:8px;cursor:pointer;display:flex;gap:11px;align-items:center}.navitem:hover,.navitem.active{background:#1d2939;color:#fff}.icon{width:20px;text-align:center}.sidebarBottom{margin-top:auto;border-top:1px solid #1d2939;padding-top:15px}.user{display:flex;gap:10px;align-items:center;padding:10px}.avatar{width:36px;height:36px;border-radius:50%;background:#344054;display:grid;place-items:center;color:#fff;font-weight:800}
+.main{margin-left:255px;width:calc(100% - 255px);padding:30px 38px 45px;max-width:1600px}.top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:25px}.eyebrow{color:var(--blue);font-size:13px;font-weight:800;margin-bottom:5px}.top h1{font-size:28px;margin:0}.top p{margin:6px 0;color:var(--muted);font-size:14px}.actions{display:flex;gap:9px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:20px}.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;box-shadow:0 1px 2px #1018280a}.cardHead{display:flex;justify-content:space-between;color:var(--muted);font-size:13px}.metric{font-size:27px;font-weight:850;margin:9px 0 4px}.trend{font-size:12px;color:var(--green)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 2px #1018280a;margin-bottom:20px;overflow:hidden}.panelHead{padding:17px 19px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}.panelHead h2{font-size:16px;margin:0}.panelHead span{font-size:12px;color:var(--muted)}.body{padding:18px}
+.grid{display:grid;grid-template-columns:1.55fr 1fr;gap:20px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+table{width:100%;border-collapse:collapse}th,td{padding:13px 12px;border-bottom:1px solid #f0f2f5;text-align:left;font-size:13px}th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}.property{font-weight:800}.sub{display:block;color:var(--muted);font-weight:400;margin-top:3px;font-size:12px}
+.status{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:20px;font-size:11px;font-weight:800}.ok{background:var(--greenbg);color:var(--green)}.warning{background:var(--amberbg);color:var(--amber)}.danger{background:var(--redbg);color:var(--red)}.info{background:var(--blue2);color:var(--blue)}.purple{background:var(--purplebg);color:var(--purple)}
+.notice{padding:13px;background:#fffaeb;border-top:1px solid #fedf89;color:#7a2e0b;font-size:12px}
+.section{display:none}.section.active{display:block}.search{padding:9px 11px;border:1px solid var(--line);border-radius:8px;width:240px}
+.timeline{position:relative;padding-left:24px}.timeline:before{content:"";position:absolute;left:8px;top:5px;bottom:5px;width:2px;background:#eaecf0}.event{position:relative;padding:0 0 22px 18px}.event:before{content:"";position:absolute;left:-21px;top:3px;width:12px;height:12px;border-radius:50%;background:#2563eb;border:3px solid #dbeafe}.event h4{margin:0 0 4px;font-size:13px}.event p{margin:0;color:#667085;font-size:12px;line-height:1.5}
+.propertyHero{display:grid;grid-template-columns:1.35fr .65fr;gap:20px}.propertyHeader{display:flex;justify-content:space-between;gap:20px}.propertyHeader h2{margin:0}.meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px}.meta div{font-size:12px;color:#667085}.meta b{display:block;color:#101828;font-size:14px;margin-top:4px}
+.checklist{display:grid;gap:10px}.check{border:1px solid var(--line);border-radius:10px;padding:13px;display:flex;justify-content:space-between;align-items:center}.check b{font-size:13px}.check small{display:block;color:#667085;margin-top:3px}
+.reminderCard{border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:10px}.reminderCard h4{margin:0 0 4px}.reminderCard p{margin:0;color:#667085;font-size:12px}.reminderActions{margin-top:10px;display:flex;gap:8px}
+.toast{position:fixed;right:25px;bottom:25px;background:#101828;color:#fff;padding:13px 17px;border-radius:9px;box-shadow:0 8px 25px #0002;display:none;font-size:13px;z-index:99}
+@media(max-width:1000px){.hero{grid-template-columns:1fr}.heroCard{display:none}.featureGrid{grid-template-columns:1fr 1fr}.loginWrap{grid-template-columns:1fr}.loginRight{display:none}.cards{grid-template-columns:1fr 1fr}.grid,.grid2,.propertyHero{grid-template-columns:1fr}}
+@media(max-width:720px){.navlinks{display:none}.hero h1{font-size:42px}.featureGrid{grid-template-columns:1fr}.sidebar{width:66px}.sidebar .logo{font-size:0}.sidebar .logo i{font-size:22px}.workspace,.navitem span,.user div:not(.avatar){display:none}.main{margin-left:66px;width:calc(100% - 66px);padding:22px 15px}.cards{grid-template-columns:1fr}.top{display:block}.actions{margin-top:15px}.cta{margin:20px;padding:28px;display:block}.cta .btn{margin-top:15px}}
+</style>
+</head>
+<body>
+
+<section id="landing" class="screen landing active">
+<nav><div class="logo">Register<i>.</i></div><div class="navlinks"><span>Product</span><span>Compliance</span><span>Pricing</span><button class="btn" onclick="goLogin()">Sign in</button><button class="btn primary" onclick="goLogin()">Book a demo</button></div></nav>
+<div class="hero">
+  <div>
+    <span class="kicker">Built for small Irish letting agencies</span>
+    <h1>Keep every property one step ahead of compliance.</h1>
+    <p>Register gives small letting teams one place to track RTB renewals, rent-review checks, notice-period workflows and compliance reminders — without replacing the systems they already use.</p>
+    <div class="heroActions"><button class="btn primary" onclick="goLogin()">Open interactive demo</button><button class="btn" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">See how it works</button></div>
+  </div>
+  <div class="heroCard"><div class="mock"><div class="mockTop"><i></i><i></i><i></i></div><div class="mockBody"><div class="mockSide"><div class="mockLine"></div><div class="mockLine"></div><div class="mockLine"></div><div class="mockLine"></div></div><div class="mockMain"><div class="mockCards"><div class="mini"></div><div class="mini"></div><div class="mini"></div></div><div class="mockTable"></div></div></div></div></div>
+</div>
+<div class="logos">Prototype concept • designed for agency validation conversations, not production legal reliance</div>
+<div id="features" class="features"><h2>Compliance workflows, simplified.</h2><p>The MVP focuses on the recurring tasks small teams are most likely to track manually.</p>
+<div class="featureGrid">
+<div class="feature"><div class="featureIcon">✓</div><h3>RTB renewal tracking</h3><p>See which registrations are current, coming due or need review, with scheduled reminders for the team.</p></div>
+<div class="feature"><div class="featureIcon">⌗</div><h3>Rent-review checks</h3><p>Run deterministic compliance calculations using verified rules, with a clear result and audit trail.</p></div>
+<div class="feature"><div class="featureIcon">◷</div><h3>Notice workflows</h3><p>Look up the applicable notice workflow by tenancy length and surface the relevant rule version for review.</p></div>
+</div></div>
+<div class="cta"><div><h2>See the full agency workflow.</h2><p>Enter the demo workspace and click through properties, timelines and reminders.</p></div><button class="btn primary" onclick="goLogin()">Launch demo</button></div>
+</section>
+
+<section id="login" class="screen">
+<div class="loginWrap">
+<div class="loginLeft">
+<div class="logo">Register<i>.</i></div>
+<div class="loginBox"><span class="kicker">Interactive prototype</span><h1>Welcome back</h1><p>Use the demo workspace to explore the product journey.</p>
+<div class="field"><label>Email</label><input value="aisling@limericklettings.ie"></div>
+<div class="field"><label>Password</label><input type="password" value="demopassword"></div>
+<button class="btn primary" style="width:100%" onclick="openApp()">Sign in to demo</button>
+<button class="btn ghost" style="width:100%;margin-top:10px" onclick="showScreen('landing')">← Back to website</button>
+</div></div>
+<div class="loginRight"><div class="quote"><span class="kicker">REGISTER WORKSPACE</span><h2>“One place to see what needs attention before it becomes a problem.”</h2><p>This prototype is designed to make customer conversations concrete: property status, deadlines, reminders, calculations and audit history all in one flow.</p></div></div>
+</div>
+</section>
+
+<section id="workspace" class="screen">
+<div class="appShell">
+<aside class="sidebar">
+<div class="logo">Register<i>.</i></div><div class="workspace">Workspace</div>
+<div class="navitem active" data-page="dashboard"><div class="icon">⌂</div><span>Dashboard</span></div>
+<div class="navitem" data-page="properties"><div class="icon">▣</div><span>Properties</span></div>
+<div class="navitem" data-page="compliance"><div class="icon">✓</div><span>Compliance</span></div>
+<div class="navitem" data-page="reminders"><div class="icon">◷</div><span>Reminders</span></div>
+<div class="navitem" data-page="calculator"><div class="icon">⌗</div><span>RPZ Calculator</span></div>
+<div class="navitem" data-page="settings"><div class="icon">⚙</div><span>Settings</span></div>
+<div class="sidebarBottom"><div class="user"><div class="avatar">AM</div><div><b style="color:#fff;font-size:13px">Aisling Murphy</b><small style="display:block">Limerick Lettings</small></div></div></div>
+</aside>
+<main class="main">
+<div class="top"><div><div class="eyebrow">REGISTER / LIMERICK LETTINGS</div><h1 id="pageTitle">Good evening, Aisling</h1><p id="pageSub">Here's what's happening across your compliance portfolio.</p></div><div class="actions"><button class="btn" onclick="toast('Notification centre opened')">Notifications</button><button class="btn primary" onclick="addProperty()">＋ Add property</button></div></div>
+
+<div id="dashboardPage" class="section active">
+<div class="cards">
+<div class="card"><div class="cardHead">Total properties <span>↗</span></div><div class="metric">24</div><div class="trend">↑ 3 this month</div></div>
+<div class="card"><div class="cardHead">RTB registrations <span>●</span></div><div class="metric">21 <small style="font-size:13px;color:#667085">/ 24</small></div><div class="trend">87.5% registered</div></div>
+<div class="card"><div class="cardHead">Renewals due soon <span>!</span></div><div class="metric">4</div><div style="font-size:12px;color:var(--amber)">Within next 30 days</div></div>
+<div class="card"><div class="cardHead">Needs attention <span>!</span></div><div class="metric">2</div><div style="font-size:12px;color:var(--red)">Action recommended</div></div>
+</div>
+<div class="grid">
+<div class="panel"><div class="panelHead"><h2>Properties requiring attention</h2><button class="btn" onclick="showPage('properties')">View all</button></div>
+<table><thead><tr><th>Property</th><th>RTB renewal</th><th>Rent</th><th>Status</th></tr></thead><tbody>
+<tr onclick="openProperty('12 Main Street')" style="cursor:pointer"><td class="property">12 Main Street<span class="sub">Aoife Murphy</span></td><td>12 Sep 2026</td><td>€1,450</td><td><span class="status warning">● Due soon</span></td></tr>
+<tr onclick="openProperty('18 River Road')" style="cursor:pointer"><td class="property">18 River Road<span class="sub">John O'Brien</span></td><td>19 Sep 2026</td><td>€1,600</td><td><span class="status warning">● Due soon</span></td></tr>
+<tr><td class="property">31 Market Lane<span class="sub">S. Byrne</span></td><td>28 Aug 2026</td><td>€1,380</td><td><span class="status danger">● Review</span></td></tr>
+</tbody></table></div>
+<div class="panel"><div class="panelHead"><h2>Upcoming reminders</h2><span>Next 30 days</span></div><div class="body">
+<div class="reminderCard"><h4>RTB renewal — 12 Main Street</h4><p>Reminder scheduled for 30 Aug 2026.</p></div>
+<div class="reminderCard"><h4>Rent review — 4 Oak Avenue</h4><p>Review window opens in 12 days.</p></div>
+<div class="reminderCard"><h4>RTB renewal — 18 River Road</h4><p>Reminder scheduled for 6 Sep 2026.</p></div>
+</div></div></div>
+<div class="panel"><div class="notice"><b>Demo environment:</b> RTB/RPZ and notice-period logic shown here is illustrative. Production rules must be verified against current official guidance and maintained as deterministic, human-reviewed logic.</div></div>
+</div>
+
+<div id="propertiesPage" class="section">
+<div class="panel"><div class="panelHead"><h2>Property register</h2><input class="search" id="search" placeholder="Search properties…" oninput="filterProps()"></div>
+<table id="propTable"><thead><tr><th>Property</th><th>Tenant</th><th>Rent</th><th>Tenancy start</th><th>RTB</th><th></th></tr></thead><tbody>
+<tr data-search="12 main street aoife murphy"><td class="property">12 Main Street<span class="sub">REG-1048</span></td><td>Aoife Murphy</td><td>€1,450</td><td>12 Sep 2025</td><td><span class="status warning">● Due soon</span></td><td><button class="btn" onclick="openProperty('12 Main Street')">Open</button></td></tr>
+<tr data-search="4 oak avenue sean ryan"><td class="property">4 Oak Avenue<span class="sub">REG-1049</span></td><td>Sean Ryan</td><td>€1,250</td><td>01 Feb 2026</td><td><span class="status ok">● Registered</span></td><td><button class="btn" onclick="openProperty('4 Oak Avenue')">Open</button></td></tr>
+<tr data-search="18 river road john obrien"><td class="property">18 River Road<span class="sub">REG-1050</span></td><td>John O'Brien</td><td>€1,600</td><td>19 Aug 2025</td><td><span class="status warning">● Due soon</span></td><td><button class="btn" onclick="openProperty('18 River Road')">Open</button></td></tr>
+<tr data-search="7 castle view mary walsh"><td class="property">7 Castle View<span class="sub">REG-1051</span></td><td>Mary Walsh</td><td>€1,550</td><td>04 Jun 2026</td><td><span class="status ok">● Registered</span></td><td><button class="btn" onclick="openProperty('7 Castle View')">Open</button></td></tr>
+</tbody></table></div>
+</div>
+
+<div id="propertyPage" class="section">
+<div class="propertyHero">
+<div class="panel"><div class="body"><div class="propertyHeader"><div><button class="btn ghost" onclick="showPage('properties')">← Properties</button><h2 id="propTitle" style="margin-top:12px">12 Main Street</h2><p style="color:#667085">Property compliance profile</p></div><span class="status warning">● Due soon</span></div>
+<div class="meta"><div>Tenant<b id="propTenant">Aoife Murphy</b></div><div>Monthly rent<b id="propRent">€1,450</b></div><div>Tenancy start<b id="propStart">12 Sep 2025</b></div><div>RTB reference<b>RTB-48192</b></div></div></div></div>
+<div class="panel"><div class="panelHead"><h2>Next action</h2></div><div class="body"><span class="status warning">● Renewal due soon</span><h3 style="margin-bottom:6px">Review RTB renewal</h3><p style="color:#667085;font-size:13px">Registration is due within the next 30 days.</p><button class="btn primary" onclick="toast('Renewal workflow opened')">Start review</button></div></div>
+</div>
+<div class="grid">
+<div class="panel"><div class="panelHead"><h2>Compliance timeline</h2><span>Audit history</span></div><div class="body timeline">
+<div class="event"><h4>RTB renewal reminder scheduled</h4><p>Reminder set for 30 Aug 2026 · created automatically.</p></div>
+<div class="event"><h4>Rent review calculation checked</h4><p>Proposed increase reviewed using demo rule set · 04 Jul 2026.</p></div>
+<div class="event"><h4>Tenant details updated</h4><p>Contact record updated by Aisling Murphy · 22 Feb 2026.</p></div>
+<div class="event"><h4>RTB registration recorded</h4><p>Reference RTB-48192 added · 12 Sep 2025.</p></div>
+</div></div>
+<div class="panel"><div class="panelHead"><h2>Property checklist</h2></div><div class="body checklist">
+<div class="check"><div><b>RTB registration</b><small>Annual registration tracking</small></div><span class="status warning">Due soon</span></div>
+<div class="check"><div><b>Rent review</b><small>Last reviewed 04 Jul 2026</small></div><span class="status ok">Current</span></div>
+<div class="check"><div><b>Notice workflow</b><small>No active notice</small></div><span class="status info">No action</span></div>
+<div class="check"><div><b>Documents</b><small>Lease and BER placeholders</small></div><span class="status purple">4 files</span></div>
+</div></div></div>
+</div>
+
+<div id="compliancePage" class="section">
+<div class="cards">
+<div class="card"><div class="cardHead">Compliant</div><div class="metric">21</div><div class="trend">No action required</div></div>
+<div class="card"><div class="cardHead">Due soon</div><div class="metric">4</div><div style="font-size:12px;color:var(--amber)">Reminder scheduled</div></div>
+<div class="card"><div class="cardHead">Needs review</div><div class="metric">2</div><div style="font-size:12px;color:var(--red)">Action needed</div></div>
+<div class="card"><div class="cardHead">Audit events</div><div class="metric">118</div><div style="font-size:12px;color:#667085">Last 90 days</div></div>
+</div>
+<div class="panel"><div class="panelHead"><h2>Portfolio compliance</h2><span>Updated today</span></div><table><thead><tr><th>Requirement</th><th>Coverage</th><th>Open items</th><th>Status</th></tr></thead><tbody>
+<tr><td class="property">RTB registration</td><td>24 properties</td><td>4 due soon</td><td><span class="status warning">Review</span></td></tr>
+<tr><td class="property">Rent review checks</td><td>11 active</td><td>0 overdue</td><td><span class="status ok">Current</span></td></tr>
+<tr><td class="property">Notice workflows</td><td>6 active</td><td>2 review</td><td><span class="status danger">Action</span></td></tr>
+</tbody></table></div>
+</div>
+
+<div id="remindersPage" class="section">
+<div class="grid2">
+<div class="panel"><div class="panelHead"><h2>Scheduled reminders</h2><span>Email/SMS prototype</span></div><div class="body">
+<div class="reminderCard"><h4>12 Main Street — RTB renewal</h4><p>Send 30 Aug 2026 · Email · Aisling Murphy</p><div class="reminderActions"><button class="btn" onclick="toast('Reminder preview opened')">Preview</button><button class="btn primary" onclick="toast('Demo reminder sent')">Send now</button></div></div>
+<div class="reminderCard"><h4>18 River Road — RTB renewal</h4><p>Send 06 Sep 2026 · Email · Aisling Murphy</p><div class="reminderActions"><button class="btn" onclick="toast('Reminder preview opened')">Preview</button><button class="btn primary" onclick="toast('Demo reminder sent')">Send now</button></div></div>
+</div></div>
+<div class="panel"><div class="panelHead"><h2>Reminder policy</h2></div><div class="body">
+<div class="field"><label>Default first reminder</label><select><option>30 days before due date</option><option>60 days before due date</option></select></div>
+<div class="field"><label>Follow-up reminder</label><select><option>7 days before due date</option><option>14 days before due date</option></select></div>
+<button class="btn primary" onclick="toast('Reminder settings saved')">Save policy</button>
+</div></div></div>
+</div>
+
+<div id="calculatorPage" class="section">
+<div class="grid2">
+<div class="panel"><div class="panelHead"><h2>RPZ rent-cap calculator</h2><span>Illustrative demo</span></div><div class="body">
+<div class="field"><label>Current rent (€)</label><input id="rent" type="number" value="1450"></div>
+<div class="field"><label>Proposed increase (%)</label><input id="increase" type="number" value="2"></div>
+<div class="field"><label>Demo cap (%)</label><input id="cap" type="number" value="2"></div>
+<button class="btn primary" onclick="calculate()">Check proposed rent</button><div id="calcResult" style="margin-top:15px"></div></div></div>
+<div class="panel"><div class="panelHead"><h2>Result design principle</h2></div><div class="body"><p style="color:#667085;font-size:13px;line-height:1.6">Production calculations should be deterministic and human-verified, with the applied rule version stored alongside the result. AI can assist with interface and document extraction, but not invent the compliance rule at runtime.</p><div class="notice">Demo only — not legal advice or a verified current rent-cap calculation.</div></div></div>
+</div>
+</div>
+
+<div id="settingsPage" class="section">
+<div class="panel"><div class="panelHead"><h2>Agency settings</h2></div><div class="body"><div class="grid2"><div class="field"><label>Agency name</label><input value="Limerick Lettings"></div><div class="field"><label>Primary admin</label><input value="Aisling Murphy"></div><div class="field"><label>Reminder channel</label><select><option>Email</option><option>Email + SMS</option></select></div><div class="field"><label>Default lead time</label><select><option>30 days</option><option>60 days</option></select></div></div><button class="btn primary" onclick="toast('Workspace settings saved')">Save settings</button></div></div>
+</div>
+</main>
+</div>
+</section>
+<div id="toast" class="toast"></div>
+
+<script>
+const pageMap={
+dashboard:["Good evening, Aisling","Here's what's happening across your compliance portfolio."],
+properties:["Property register","Manage properties, tenants and registration status."],
+compliance:["Compliance centre","One view of the portfolio items that need attention."],
+reminders:["Reminder centre","Schedule and review upcoming compliance reminders."],
+calculator:["RPZ rent-cap calculator","Check a proposed rent increase using demo logic."],
+settings:["Settings","Configure your agency workspace."]
+};
+document.querySelectorAll(".navitem").forEach(n=>n.addEventListener("click",()=>showPage(n.dataset.page)));
+function showScreen(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById(id).classList.add("active");window.scrollTo(0,0)}
+function goLogin(){showScreen("login")}
+function openApp(){showScreen("workspace");showPage("dashboard")}
+function showPage(id){
+document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+document.getElementById(id+"Page").classList.add("active");
+document.querySelectorAll(".navitem").forEach(n=>n.classList.toggle("active",n.dataset.page===id));
+pageTitle.textContent=pageMap[id][0];pageSub.textContent=pageMap[id][1];
+}
+function openProperty(name){
+const data={
+"12 Main Street":["Aoife Murphy","€1,450","12 Sep 2025"],
+"4 Oak Avenue":["Sean Ryan","€1,250","01 Feb 2026"],
+"18 River Road":["John O'Brien","€1,600","19 Aug 2025"],
+"7 Castle View":["Mary Walsh","€1,550","04 Jun 2026"]
+}[name]||["Demo Tenant","€1,200","27 Aug 2026"];
+document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));propertyPage.classList.add("active");
+document.querySelectorAll(".navitem").forEach(n=>n.classList.remove("active"));
+pageTitle.textContent="Property profile";pageSub.textContent="Review the full compliance history and next actions.";
+propTitle.textContent=name;propTenant.textContent=data[0];propRent.textContent=data[1];propStart.textContent=data[2];
+}
+function filterProps(){let q=search.value.toLowerCase();document.querySelectorAll("#propTable tbody tr").forEach(r=>r.style.display=r.dataset.search.includes(q)?"":"none")}
+function addProperty(){toast("New-property workflow opened in demo");showPage("properties")}
+function calculate(){let r=+rent.value,i=+increase.value,c=+cap.value,p=r*(1+i/100),m=r*(1+c/100),ok=i<=c;calcResult.innerHTML=`<div class="panel" style="margin:0"><div class="body"><span class="status ${ok?"ok":"danger"}">${ok?"WITHIN DEMO CAP":"EXCEEDS DEMO CAP"}</span><h3 style="font-size:28px;margin:12px 0 6px">€${p.toFixed(2)}</h3><div style="font-size:13px;color:#667085">Demo maximum: €${m.toFixed(2)}</div></div></div>`}
+function toast(msg){let t=document.getElementById("toast");t.textContent=msg;t.style.display="block";clearTimeout(window._toast);window._toast=setTimeout(()=>t.style.display="none",2200)}
+calculate();
+</script>
+</body>
+</html>
