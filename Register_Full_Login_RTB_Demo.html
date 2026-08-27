@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Register — RTB Rules Demo (Aug 2026)</title>
+<style>
+:root{
+ --nav:#0f172a;--nav2:#1e293b;--bg:#f6f8fb;--card:#fff;--text:#172033;--muted:#667085;--line:#e5e7eb;
+ --blue:#2563eb;--bluebg:#eff6ff;--green:#087443;--greenbg:#ecfdf3;--amber:#a15c00;--amberbg:#fff7e6;
+ --red:#b42318;--redbg:#fef3f2;--purple:#6941c6;--purplebg:#f4f3ff
+}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text)}
+button,input,select{font:inherit}a{color:var(--blue)}button{cursor:pointer}.shell{display:flex;min-height:100vh}
+aside{width:260px;background:var(--nav);color:#94a3b8;padding:22px 14px;position:fixed;inset:0 auto 0 0;display:flex;flex-direction:column}
+.logo{color:#fff;font-weight:850;font-size:23px;padding:4px 12px 25px}.logo span{color:#60a5fa}.smallcap{font-size:10px;text-transform:uppercase;letter-spacing:.1em;padding:0 12px 8px}
+.nav{padding:11px 12px;border-radius:8px;margin:3px 0;display:flex;gap:11px;align-items:center}.nav:hover,.nav.active{background:var(--nav2);color:#fff}
+aside footer{margin-top:auto;border-top:1px solid #334155;padding:14px 10px;font-size:11px;line-height:1.45}
+main{margin-left:260px;width:calc(100% - 260px);padding:30px 38px 50px;max-width:1550px}
+header{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:23px}h1{font-size:28px;margin:2px 0 6px}header p{color:var(--muted);font-size:14px;margin:0}
+.pill{display:inline-flex;padding:6px 9px;border-radius:20px;font-size:11px;font-weight:800;background:var(--bluebg);color:var(--blue)}
+.actions{display:flex;gap:8px}.btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px 12px;font-weight:750;color:var(--text)}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.section{display:none}.section.active{display:block}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:20px}
+.card,.panel{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 2px #1018280a}.card{padding:18px}.label{color:var(--muted);font-size:12px}.metric{font-size:28px;font-weight:850;margin:8px 0 3px}
+.panel{margin-bottom:19px;overflow:hidden}.ph{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:14px;align-items:center}.ph h2{margin:0;font-size:16px}.body{padding:18px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:19px}.gridWide{display:grid;grid-template-columns:1.35fr .65fr;gap:19px}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:12px;border-bottom:1px solid #f0f2f5;font-size:13px;vertical-align:top}th{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.status{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:11px;font-weight:800}.ok{background:var(--greenbg);color:var(--green)}.warn{background:var(--amberbg);color:var(--amber)}.bad{background:var(--redbg);color:var(--red)}.info{background:var(--bluebg);color:var(--blue)}.purple{background:var(--purplebg);color:var(--purple)}
+.field{margin-bottom:13px}.field label{font-size:12px;font-weight:750;display:block;margin-bottom:5px}.field input,.field select{width:100%;padding:10px 11px;border:1px solid #d0d5dd;border-radius:8px;background:#fff}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.result{border:1px solid var(--line);border-radius:10px;padding:15px;background:#f8fafc;margin-top:14px}.result h3{margin:3px 0 8px;font-size:25px}.muted{color:var(--muted);font-size:12px;line-height:1.5}
+.explain{border-left:3px solid var(--blue);padding-left:13px;margin-top:14px}.explain h4{margin:0 0 5px;font-size:13px}.explain p{margin:0;color:var(--muted);font-size:12px;line-height:1.55}
+.source{border:1px solid #dbeafe;background:#f8fbff;border-radius:9px;padding:12px;margin-top:10px}.source b{font-size:12px}.source p{margin:4px 0 7px;color:#475467;font-size:11px;line-height:1.5}
+.alert{background:#fffaeb;border:1px solid #fedf89;color:#7a2e0b;padding:12px 14px;border-radius:9px;font-size:12px;line-height:1.55;margin-bottom:18px}
+.rule{padding:14px 0;border-bottom:1px solid #eef1f4}.rule:last-child{border-bottom:0}.rule h3{font-size:14px;margin:0 0 6px}.rule p{font-size:12px;color:#667085;line-height:1.55;margin:0 0 7px}.tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:15px}.tab{padding:7px 10px;border:1px solid var(--line);border-radius:20px;background:#fff;font-size:11px;font-weight:750}.tab.active{background:var(--bluebg);border-color:#bfdbfe;color:var(--blue)}
+.checkrow{display:flex;justify-content:space-between;gap:15px;padding:12px;border:1px solid var(--line);border-radius:9px;margin-bottom:9px}.checkrow b{font-size:13px}.checkrow span.muted{display:block;margin-top:3px}
+.big{font-size:28px;font-weight:850}.timeline{padding-left:16px;border-left:2px solid #e5e7eb}.event{padding:0 0 18px 15px;position:relative}.event:before{content:"";position:absolute;left:-22px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--blue);border:2px solid #dbeafe}.event b{font-size:12px}.event p{font-size:11px;color:var(--muted);margin:3px 0}
+.toast{position:fixed;right:22px;bottom:22px;background:#101828;color:#fff;padding:12px 16px;border-radius:8px;display:none;font-size:12px}
+code{background:#f2f4f7;padding:2px 5px;border-radius:4px}
+@media(max-width:1000px){.cards{grid-template-columns:1fr 1fr}.grid2,.gridWide{grid-template-columns:1fr}}
+@media(max-width:720px){aside{width:66px}.logo{font-size:0}.logo span{font-size:22px}.smallcap,.nav span,aside footer{display:none}main{margin-left:66px;width:calc(100% - 66px);padding:20px 14px}.cards{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr}header{display:block}.actions{margin-top:12px}}
+
+.screen{display:none;min-height:100vh}.screen.active{display:block}
+.siteNav{max-width:1180px;margin:auto;padding:22px 24px;display:flex;justify-content:space-between;align-items:center}
+.siteLinks{display:flex;align-items:center;gap:24px;color:#475467;font-size:14px}
+.hero{max-width:1180px;margin:auto;padding:86px 24px 70px;display:grid;grid-template-columns:1.08fr .92fr;gap:58px;align-items:center}
+.hero h1{font-size:54px;line-height:1.03;letter-spacing:-.04em;margin:17px 0}
+.hero p{font-size:18px;line-height:1.65;color:#667085;max-width:650px}
+.heroActions{display:flex;gap:10px;margin-top:25px}
+.heroMock{background:#0f172a;padding:18px;border-radius:20px;box-shadow:0 25px 60px #10182825}
+.heroMockInner{background:#fff;border-radius:12px;overflow:hidden}
+.heroBar{padding:11px;background:#f8fafc;border-bottom:1px solid #e5e7eb;display:flex;gap:6px}
+.heroBar i{width:8px;height:8px;border-radius:50%;background:#d0d5dd}
+.heroDash{display:grid;grid-template-columns:115px 1fr;min-height:360px}
+.heroSide{background:#101828;padding:15px}
+.heroSide div{height:9px;background:#334155;border-radius:6px;margin-bottom:11px}
+.heroMain{background:#f6f8fb;padding:16px}
+.heroCards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.heroCards div{height:68px;background:#fff;border:1px solid #e5e7eb;border-radius:9px}
+.heroTable{height:205px;background:#fff;border:1px solid #e5e7eb;border-radius:9px;margin-top:12px}
+.featureWrap{max-width:1180px;margin:auto;padding:70px 24px}
+.featureWrap h2{text-align:center;font-size:34px;margin-bottom:8px}
+.featureWrap>p{text-align:center;color:#667085;margin-bottom:30px}
+.featureGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.feature{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:22px}
+.feature h3{margin:13px 0 7px}
+.feature p{font-size:14px;line-height:1.55;color:#667085}
+.featureIcon{width:40px;height:40px;background:#eff6ff;color:#2563eb;border-radius:10px;display:grid;place-items:center;font-weight:800}
+.landingPage{background:linear-gradient(180deg,#fff,#f5f7fb)}
+.loginPage{background:#fff}
+.loginWrap{min-height:100vh;display:grid;grid-template-columns:1fr 1fr}
+.loginLeft{padding:42px 70px;display:flex;flex-direction:column}
+.loginBox{max-width:420px;width:100%;margin:auto}
+.loginBox h1{font-size:32px;margin:12px 0 6px}
+.loginBox p{color:#667085;margin-bottom:25px}
+.loginRight{background:#101828;color:#fff;display:grid;place-items:center;padding:55px}
+.loginQuote{max-width:500px}
+.loginQuote h2{font-size:34px;line-height:1.25}
+.loginQuote p{color:#98a2b3;line-height:1.6}
+.demoBadge{display:inline-flex;padding:6px 9px;border-radius:20px;background:#eff6ff;color:#2563eb;font-size:11px;font-weight:800}
+@media(max-width:1000px){.hero{grid-template-columns:1fr}.heroMock{display:none}.featureGrid{grid-template-columns:1fr 1fr}.loginWrap{grid-template-columns:1fr}.loginRight{display:none}}
+@media(max-width:720px){.siteLinks{display:none}.hero h1{font-size:42px}.featureGrid{grid-template-columns:1fr}.loginLeft{padding:30px 20px}}
+
+</style>
+</head>
+<body>
+
+<section id="landingScreen" class="screen landingPage active">
+  <div class="siteNav">
+    <div class="logo" style="color:#101828;padding:0">Register<span>.</span></div>
+    <div class="siteLinks">
+      <span>Product</span><span>Compliance</span><span>Rules</span>
+      <button class="btn" onclick="showScreen('loginScreen')">Sign in</button>
+      <button class="btn primary" onclick="showScreen('loginScreen')">Open demo</button>
+    </div>
+  </div>
+  <div class="hero">
+    <div>
+      <span class="demoBadge">RTB-FOCUSED COMPLIANCE DEMO</span>
+      <h1>Keep every tenancy ahead of the next RTB deadline.</h1>
+      <p>Register is a prototype compliance workspace for small Irish letting agencies. Track annual registrations, national rent-control checks, notice workflows and rule changes in one place.</p>
+      <div class="heroActions">
+        <button class="btn primary" onclick="showScreen('loginScreen')">Launch interactive demo</button>
+        <button class="btn" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">See features</button>
+      </div>
+    </div>
+    <div class="heroMock">
+      <div class="heroMockInner">
+        <div class="heroBar"><i></i><i></i><i></i></div>
+        <div class="heroDash">
+          <div class="heroSide"><div></div><div></div><div></div><div></div></div>
+          <div class="heroMain">
+            <div class="heroCards"><div></div><div></div><div></div></div>
+            <div class="heroTable"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="features" class="featureWrap">
+    <h2>Built around current RTB workflows.</h2>
+    <p>This prototype combines product UX with rule explanations and direct RTB source links.</p>
+    <div class="featureGrid">
+      <div class="feature"><div class="featureIcon">▣</div><h3>Annual registration</h3><p>Track anniversary dates, one-month registration windows, standard fees and late-fee exposure.</p></div>
+      <div class="feature"><div class="featureIcon">⌗</div><h3>National rent control</h3><p>Check annual increase logic, market-rent routes and same-day notice requirements introduced in 2026.</p></div>
+      <div class="feature"><div class="featureIcon">◷</div><h3>Termination workflow</h3><p>Pair legal grounds with current notice-period tables and show why a selected route is or is not available.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="loginScreen" class="screen loginPage">
+  <div class="loginWrap">
+    <div class="loginLeft">
+      <div class="logo" style="color:#101828;padding:0">Register<span>.</span></div>
+      <div class="loginBox">
+        <span class="demoBadge">INTERACTIVE PROTOTYPE</span>
+        <h1>Welcome back</h1>
+        <p>Sign in to the demo workspace. These credentials are pre-filled for the prototype.</p>
+        <div class="field"><label>Email</label><input value="aisling@limericklettings.ie"></div>
+        <div class="field"><label>Password</label><input type="password" value="demopassword"></div>
+        <button class="btn primary" style="width:100%" onclick="enterWorkspace()">Sign in to demo</button>
+        <button class="btn" style="width:100%;margin-top:10px" onclick="showScreen('landingScreen')">← Back</button>
+      </div>
+    </div>
+    <div class="loginRight">
+      <div class="loginQuote">
+        <span class="demoBadge">REGISTER WORKSPACE</span>
+        <h2>Compliance rules change. Your workflow should keep up.</h2>
+        <p>The demo workspace links every major compliance result back to the RTB guidance used so agents can see both the answer and why it was produced.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="workspaceScreen" class="screen">
+<div class="shell">
+<aside>
+ <div class="logo">Register<span>.</span></div>
+ <div class="smallcap">RTB rules demo</div>
+ <div class="nav active" data-page="dashboard">⌂ <span>Dashboard</span></div>
+ <div class="nav" data-page="registration">▣ <span>Registration</span></div>
+ <div class="nav" data-page="rent">⌗ <span>Rent control</span></div>
+ <div class="nav" data-page="termination">◷ <span>Termination check</span></div>
+ <div class="nav" data-page="rules">✓ <span>Verified rule library</span></div>
+ <footer>Rule snapshot: <b style="color:#fff">27 Aug 2026</b><br>Prototype based on RTB.ie plain-language guidance. Cross-check against legislation before production use.</footer>
+</aside>
+<main>
+<header>
+ <div><span class="pill">CURRENT-RULE PROTOTYPE · AUG 2026</span><h1 id="title">Compliance dashboard</h1><p id="subtitle">A clickable demo using rules cross-checked against current RTB.ie guidance.</p></div>
+ <div class="actions"><button class="btn" onclick="showPage('rules')">View sources</button><button class="btn primary" onclick="toast('Demo property workflow opened')">+ Add property</button></div>
+</header>
+
+<section id="dashboard" class="section active">
+<div class="alert"><b>Important:</b> This version is intentionally more realistic than the earlier prototype, but it is still a product demo rather than legal advice. Every rule used below is exposed in the <b>Verified rule library</b> so you can check it against RTB.ie yourself.</div>
+<div class="cards">
+ <div class="card"><div class="label">Managed tenancies</div><div class="metric">24</div><div class="muted">Demo agency portfolio</div></div>
+ <div class="card"><div class="label">Annual registrations due</div><div class="metric">4</div><div class="muted">Within next 30 days</div></div>
+ <div class="card"><div class="label">Rent reviews to check</div><div class="metric">3</div><div class="muted">National rent-control rules</div></div>
+ <div class="card"><div class="label">Termination workflows</div><div class="metric">2</div><div class="muted">Notice + reason checks</div></div>
+</div>
+<div class="gridWide">
+<div class="panel"><div class="ph"><h2>Properties requiring attention</h2><span class="muted">Demo data</span></div>
+<table><thead><tr><th>Property</th><th>Tenancy</th><th>Next action</th><th>Status</th></tr></thead><tbody>
+<tr><td><b>12 Main Street</b><div class="muted">Aoife Murphy</div></td><td>Started 12 Sep 2025</td><td>Annual RTB registration</td><td><span class="status warn">Due soon</span></td></tr>
+<tr><td><b>18 River Road</b><div class="muted">John O'Brien</div></td><td>Started 19 Aug 2025</td><td>Annual registration</td><td><span class="status bad">Deadline window</span></td></tr>
+<tr><td><b>4 Oak Avenue</b><div class="muted">Sean Ryan</div></td><td>Started 1 Apr 2026</td><td>Rent review eligibility</td><td><span class="status info">Not yet 12 months</span></td></tr>
+<tr><td><b>7 Castle View</b><div class="muted">Mary Walsh</div></td><td>Started 4 Jun 2026</td><td>No immediate action</td><td><span class="status ok">Current</span></td></tr>
+</tbody></table></div>
+<div>
+<div class="panel"><div class="ph"><h2>Rule changes represented</h2></div><div class="body">
+<div class="checkrow"><div><b>National rent control</b><span class="muted">From 1 Mar 2026</span></div><span class="status ok">Built in</span></div>
+<div class="checkrow"><div><b>Same-day RTB notice</b><span class="muted">Rent setting/review</span></div><span class="status ok">Built in</span></div>
+<div class="checkrow"><div><b>3 comparables</b><span class="muted">RTB Rent Register</span></div><span class="status ok">Built in</span></div>
+<div class="checkrow"><div><b>New notice periods</b><span class="muted">90–224 days</span></div><span class="status ok">Built in</span></div>
+</div></div></div>
+</div>
+</section>
+
+<section id="registration" class="section">
+<div class="grid2">
+<div class="panel"><div class="ph"><h2>Annual registration checker</h2><span class="status info">RTB verified rule</span></div><div class="body">
+<div class="field"><label>Tenancy start date</label><input id="regStart" type="date" value="2025-09-12"></div>
+<div class="field"><label>Check date</label><input id="regCheck" type="date" value="2026-08-27"></div>
+<button class="btn primary" onclick="checkRegistration()">Check registration deadline</button>
+<div id="regResult" class="result"></div>
+<div class="source"><b>RTB rule used</b><p>New tenancy: register within one month. Continuing tenancy: register annually on the anniversary of the tenancy start date, with up to one calendar month after the due date before late fees apply.</p><a target="_blank" href="https://rtb.ie/register-tenancies/register-a-tenancy/when-to-register/">Cross-check on RTB.ie ↗</a></div>
+</div></div>
+<div class="panel"><div class="ph"><h2>Fee estimator</h2></div><div class="body">
+<div class="field"><label>Months or part-months late</label><input id="lateMonths" type="number" min="0" value="0"></div>
+<button class="btn primary" onclick="feeCalc()">Estimate fee</button>
+<div id="feeResult" class="result"></div>
+<div class="explain"><h4>Rule applied</h4><p>Private / SSA / cost rental standard fee: €40 per year. Late fee: €10 for each month or part of a month late.</p></div>
+<div class="source"><b>RTB registration fees</b><p>The RTB fee page also describes a €170 composite registration for qualifying same-building registrations and no extra fee for certain second/further registrations in the same 12 months.</p><a target="_blank" href="https://rtb.ie/register-tenancies/register-a-tenancy/registration-fees/">Cross-check fees on RTB.ie ↗</a></div>
+</div></div>
+</div>
+</section>
+
+<section id="rent" class="section">
+<div class="grid2">
+<div class="panel"><div class="ph"><h2>National rent-control checker</h2><span class="status info">Post-1 Mar 2026</span></div><div class="body">
+<div class="formgrid">
+<div class="field"><label>Current monthly rent (€)</label><input id="currentRent" type="number" value="1500"></div>
+<div class="field"><label>CPI change (%)</label><input id="cpi" type="number" step="0.1" value="1.7"></div>
+<div class="field"><label>Tenancy started</label><input id="rentStart" type="date" value="2025-06-01"></div>
+<div class="field"><label>Last rent set/reviewed</label><input id="lastSet" type="date" value="2025-09-01"></div>
+<div class="field"><label>Proposed new setting date</label><input id="newSet" type="date" value="2026-09-01"></div>
+<div class="field"><label>New qualifying apartment/SSA construction commenced on or after 10 Jun 2025?</label><select id="newBuild"><option value="no">No</option><option value="yes">Yes</option></select></div>
+</div>
+<button class="btn primary" onclick="rentCalc()">Calculate maximum annual increase</button>
+<div id="rentResult" class="result"></div>
+<div class="source"><b>RTB rules used</b><p>For most private tenancies: reviews every 12 months and increase limited to 2% or CPI, whichever is lower. Qualifying new apartments/SSA whose construction commenced on or after 10 June 2025 use CPI without the 2% cap.</p><a target="_blank" href="https://rtb.ie/renting/setting-and-reviewing-private-rents-from-1-march-2026/">Cross-check rent rules ↗</a> · <a target="_blank" href="https://rtb.ie/rtb-rent-calculator/">Official RTB calculator ↗</a></div>
+</div></div>
+<div class="panel"><div class="ph"><h2>Market-rent route checker</h2></div><div class="body">
+<div class="field"><label>Tenancy / situation</label><select id="marketRoute">
+<option value="pre">Ongoing private tenancy started before 1 Mar 2026</option>
+<option value="choice">New tenancy after previous tenant left by choice</option>
+<option value="breach">New tenancy after previous tenant breach</option>
+<option value="needs">New tenancy after property no longer suited previous tenant</option>
+<option value="first">First tenancy in the property</option>
+<option value="vacant">No tenancy for at least 2 years</option>
+<option value="nofault">New tenancy after landlord no-fault termination</option>
+<option value="sixyear">End of 6-year TMD for tenancy begun from 1 Mar 2026</option>
+</select></div>
+<button class="btn primary" onclick="marketCheck()">Check route</button>
+<div id="marketResult" class="result"></div>
+<div class="source"><b>Cross-check requirement</b><p>Where market rent is permitted, RTB guidance requires a statement that rent is not above market rent and details of three similar properties from the RTB Rent Register. For rent-setting examples, the similar tenancies must have begun in the last 3 months.</p><a target="_blank" href="https://rtb.ie/renting/setting-and-reviewing-private-rents-from-1-march-2026/">Open RTB guidance ↗</a></div>
+</div></div>
+</div>
+<div class="panel"><div class="ph"><h2>Rent-review procedure checklist</h2></div><div class="body">
+<div class="checkrow"><div><b>Review timing checked</b><span class="muted">Usually at least 12 months since prior setting/review</span></div><span class="status info">Required</span></div>
+<div class="checkrow"><div><b>RTB calculator printout</b><span class="muted">Attach to setting/review statement where applicable</span></div><span class="status info">Required</span></div>
+<div class="checkrow"><div><b>3 comparable properties</b><span class="muted">From RTB Rent Register</span></div><span class="status info">Required</span></div>
+<div class="checkrow"><div><b>Same-day service</b><span class="muted">Send notice to tenant and RTB on same day</span></div><span class="status bad">Validity trap</span></div>
+</div></div>
+</section>
+
+<section id="termination" class="section">
+<div class="grid2">
+<div class="panel"><div class="ph"><h2>Notice-period lookup</h2><span class="status info">Current RTB table</span></div><div class="body">
+<div class="field"><label>Tenancy length</label><select id="tenancyLength">
+<option value="lt6">Less than 6 months</option><option value="6to12">6 months to 1 year</option>
+<option value="1to7">1 year to 7 years</option><option value="7to8">7 years to 8 years</option><option value="gt8">More than 8 years</option>
+</select></div>
+<div class="field"><label>Special ground</label><select id="specialGround">
+<option value="normal">Normal notice-period table</option><option value="arrears">Rent arrears after correct warning process</option>
+<option value="breach">Other breach after correct warning process</option><option value="asb">Serious anti-social behaviour</option>
+</select></div>
+<button class="btn primary" onclick="noticeCalc()">Find minimum notice</button>
+<div id="noticeResult" class="result"></div>
+<div class="source"><b>RTB Notice of Termination guide</b><p>General table: 90, 152, 180, 196 and 224 days. RTB lists shorter periods of 28 days for rent arrears / other breaches after required warning procedures, and 7 days for serious anti-social behaviour.</p><a target="_blank" href="https://rtb.ie/renting/ending-a-tenancy/notice-of-termination-guides/">Cross-check notice periods ↗</a></div>
+</div></div>
+<div class="panel"><div class="ph"><h2>Can the landlord use this reason?</h2></div><div class="body">
+<div class="field"><label>Tenancy began</label><select id="termEra"><option value="pre">Before 1 Mar 2026</option><option value="post">From 1 Mar 2026</option></select></div>
+<div class="field"><label>Landlord size</label><select id="landlordSize"><option value="small">1–3 tenancies</option><option value="large">4+ tenancies / company landlord</option></select></div>
+<div class="field"><label>Reason</label><select id="termReason">
+<option value="breach">Tenant breach</option><option value="needs">Property no longer suits tenant needs</option>
+<option value="sell">Sell property</option><option value="family">Landlord/family member to live there</option>
+<option value="renovate">Substantial refurbishment</option><option value="use">Change property use</option>
+</select></div>
+<div class="field"><label>If post-1 Mar 2026 small landlord: point in 6-year cycle</label><select id="cycle"><option value="during">During 6-year TMD cycle</option><option value="end">At end of 6-year TMD cycle</option></select></div>
+<button class="btn primary" onclick="terminationCheck()">Check permitted ground</button>
+<div id="termResult" class="result"></div>
+<div class="source"><b>RTB ending-tenancy rules</b><p>For new tenancies from 1 Mar 2026, grounds vary by landlord size. Large/company landlords have materially narrower no-fault termination rights after six months.</p><a target="_blank" href="https://rtb.ie/renting/ending-a-tenancy/notice-of-termination-guides/">Cross-check on RTB.ie ↗</a></div>
+</div></div>
+</div>
+</section>
+
+<section id="rules" class="section">
+<div class="panel"><div class="ph"><h2>Verified rule library</h2><span class="pill">Primary source: RTB.ie</span></div><div class="body">
+<div class="rule"><h3>1. Annual RTB registration</h3><p>Register a new tenancy within one month of its start. Re-register annually on the anniversary of the tenancy start date. RTB says annual registration may be completed up to one calendar month after the due date before late fees apply.</p><a target="_blank" href="https://rtb.ie/register-tenancies/register-a-tenancy/when-to-register/">RTB: When to register ↗</a></div>
+<div class="rule"><h3>2. Registration fees</h3><p>For private, student-specific and cost-rental tenancies, standard registration is €40/year; late fee is €10 per month or part-month late. RTB also describes composite and repeat-registration fee rules.</p><a target="_blank" href="https://rtb.ie/register-tenancies/register-a-tenancy/registration-fees/">RTB: Registration fees ↗</a></div>
+<div class="rule"><h3>3. National rent control from 1 March 2026</h3><p>All private tenancies and SSA are covered by national rent-control rules. Most annual increases are capped at 2% or CPI, whichever is lower. Qualifying newly built apartments/SSA can increase in line with CPI without the 2% ceiling.</p><a target="_blank" href="https://rtb.ie/renting/setting-and-reviewing-private-rents-from-1-march-2026/">RTB: Setting and reviewing private rents ↗</a></div>
+<div class="rule"><h3>4. Market-rent resets</h3><p>Existing private tenancies begun before 1 March 2026 cannot reset to market rent while ongoing. New private tenancies from 1 March 2026 have specific permitted routes, including some new-tenancy circumstances and the end of a six-year Tenancy of Minimum Duration.</p><a target="_blank" href="https://rtb.ie/renting/setting-and-reviewing-private-rents-from-1-march-2026/">RTB rent guidance ↗</a></div>
+<div class="rule"><h3>5. Rent notices and comparables</h3><p>RTB guidance requires rent setting/review notices to be sent to the tenant and RTB on the same day. The guidance also requires three comparable properties from the RTB Rent Register in relevant statements.</p><a target="_blank" href="https://rtb.ie/renting/guide-to-rent-review-notices/">RTB: Rent review notices ↗</a></div>
+<div class="rule"><h3>6. Notice of Termination periods</h3><p>General landlord notice periods are 90 days (&lt;6 months), 152 days (6–12 months), 180 days (1–7 years), 196 days (7–8 years), and 224 days (&gt;8 years). Specific shorter periods apply to certain breaches.</p><a target="_blank" href="https://rtb.ie/renting/ending-a-tenancy/notice-of-termination-guides/">RTB: Notice of Termination guide ↗</a></div>
+<div class="rule"><h3>7. Ending tenancies from 1 March 2026</h3><p>For post-1 March 2026 tenancies, permitted termination grounds after six months depend on whether the landlord has 1–3 tenancies or 4+ / is a company, and for small landlords also on the point in the six-year tenancy cycle.</p><a target="_blank" href="https://rtb.ie/renting/ending-a-tenancy/notice-of-termination-guides/">RTB: Ending a tenancy ↗</a></div>
+</div></div>
+<div class="alert"><b>One RTB-page wording issue worth cross-checking:</b> the registration-fees page summary table labels the composite fee as “10 or more properties”, while the detailed text on the same page says “up to 10 tenancies in the same building”. I have not tried to silently reconcile that inconsistency in this demo.</div>
+</section>
+</main>
+</div>
+<div id="toast" class="toast"></div>
+</section>
+
+<script>
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0,0);
+}
+function enterWorkspace(){
+  showScreen("workspaceScreen");
+  showPage("dashboard");
+}
+const titles={
+dashboard:["Compliance dashboard","A clickable demo using rules cross-checked against current RTB.ie guidance."],
+registration:["RTB registration","Annual deadlines, late-fee exposure and registration workflow."],
+rent:["National rent control","Post-1 March 2026 annual increase and market-rent routes."],
+termination:["Termination workflow","Check both the legal ground and the applicable notice period."],
+rules:["Verified rule library","The exact RTB guidance this prototype is based on."]
+};
+document.querySelectorAll(".nav").forEach(n=>n.onclick=()=>showPage(n.dataset.page));
+function showPage(id){document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".nav").forEach(n=>n.classList.toggle("active",n.dataset.page===id));title.textContent=titles[id][0];subtitle.textContent=titles[id][1];window.scrollTo(0,0)}
+function daysBetween(a,b){return Math.floor((b-a)/86400000)}
+function addYears(d,n){let x=new Date(d);x.setFullYear(x.getFullYear()+n);return x}
+function addMonths(d,n){let x=new Date(d);x.setMonth(x.getMonth()+n);return x}
+function fmt(d){return d.toLocaleDateString("en-IE",{day:"numeric",month:"short",year:"numeric"})}
+
+function checkRegistration(){
+ let s=new Date(regStart.value+"T12:00:00"), c=new Date(regCheck.value+"T12:00:00");
+ let anniversary=new Date(s); while(addYears(anniversary,1)<=c) anniversary=addYears(anniversary,1);
+ let next=anniversary<c?addYears(anniversary,1):anniversary;
+ if(s.getFullYear()===c.getFullYear() && c<s) next=s;
+ // determine most recent anniversary on/before check
+ let due=new Date(s); while(addYears(due,1)<=c) due=addYears(due,1);
+ if(c<s) due=s;
+ let deadline=addMonths(due,1);
+ let status,cls,note;
+ if(c<due){status="Not due yet";cls="ok";note=`Next annual due date: ${fmt(due)}.`}
+ else if(c<=deadline){status="Due / registration window";cls="warn";note=`Anniversary: ${fmt(due)}. Complete within one calendar month to avoid late fees.`}
+ else {status="Late";cls="bad";note=`Anniversary was ${fmt(due)} and the one-month registration window has passed.`}
+ regResult.innerHTML=`<span class="status ${cls}">${status}</span><h3>${fmt(due)}</h3><div class="muted">${note}</div><div class="explain"><h4>Why Register says this</h4><p>The RTB says continuing tenancies are registered annually on the anniversary of the tenancy start date, and late fees apply after the registration window.</p></div>`;
+}
+function feeCalc(){let m=Math.max(0,parseInt(lateMonths.value||0));let total=40+m*10;feeResult.innerHTML=`<div class="label">Estimated registration charge</div><h3>€${total}</h3><div class="muted">€40 standard fee + €${m*10} estimated late fees (${m} month/part-month${m===1?"":"s"}).</div>`}
+
+function rentCalc(){
+ let rent=+currentRent.value,c=+cpi.value;let last=new Date(lastSet.value+"T12:00:00"), next=new Date(newSet.value+"T12:00:00");
+ let eligible=daysBetween(last,next)>=365;let rate=newBuild.value==="yes"?c:Math.min(2,c);let max=rent*(1+rate/100);
+ let status=eligible?"Eligible on simple 12-month timing check":"Too early on simple 12-month timing check";
+ let cls=eligible?"ok":"bad";
+ rentResult.innerHTML=`<span class="status ${cls}">${status}</span><h3>€${max.toFixed(2)}</h3><div class="muted">Illustrative maximum using ${rate.toFixed(2)}% (${newBuild.value==="yes"?"CPI-only qualifying development":"lower of 2% and CPI"}).</div><div class="explain"><h4>Why Register applied ${rate.toFixed(2)}%</h4><p>${newBuild.value==="yes"?"You selected a qualifying new apartment/SSA. RTB guidance says CPI applies without the 2% ceiling if the development meets the construction commencement conditions.":"For most private tenancies, RTB guidance limits annual increases to 2% or CPI, whichever is lower."} This demo does not reproduce the RTB's historical CPI index calculation; use the official RTB Rent Calculator to validate the final figure.</p></div>`;
+}
+function marketCheck(){
+ let v=marketRoute.value,allowed=true,msg="";
+ if(v==="pre"){allowed=false;msg="An ongoing private tenancy created before 1 March 2026 cannot be reset to market rent."}
+ else if(v==="nofault"){allowed=false;msg="RTB guidance says a new tenancy cannot reset to market rent where the prior tenancy ended through specified no-fault landlord grounds."}
+ else if(v==="sixyear"){allowed=true;msg="For a private tenancy created from 1 March 2026, RTB guidance permits a market-rent reset at the end of the 6-year Tenancy of Minimum Duration cycle."}
+ else {allowed=true;msg="This situation appears in RTB guidance as a route where setting to market rent may be allowed, subject to the exact conditions and required documentation."}
+ marketResult.innerHTML=`<span class="status ${allowed?"ok":"bad"}">${allowed?"Potentially allowed":"Not allowed on selected route"}</span><h3>${allowed?"Market-rent pathway":"Capped-rent pathway"}</h3><div class="muted">${msg}</div>${allowed?`<div class="explain"><h4>Next compliance step</h4><p>Use the RTB Rent Register and document three comparable properties; send the required notice/statement to the tenant and RTB as required.</p></div>`:""}`;
+}
+function noticeCalc(){
+ let special=specialGround.value,days,why;
+ if(special==="arrears"){days=28;why="RTB says 28 days for rent arrears after the required warning notice is correctly served to tenant and RTB."}
+ else if(special==="breach"){days=28;why="RTB says 28 days for other tenant-obligation breaches after the required warning process."}
+ else if(special==="asb"){days=7;why="RTB says 7 days for serious anti-social behaviour; high standards of proof apply."}
+ else {let map={lt6:90,"6to12":152,"1to7":180,"7to8":196,gt8:224};days=map[tenancyLength.value];why="This comes directly from the current RTB general Notice of Termination table."}
+ noticeResult.innerHTML=`<div class="label">Minimum notice in selected scenario</div><h3>${days} days</h3><div class="muted">${why}</div>`;
+}
+function terminationCheck(){
+ let era=termEra.value,size=landlordSize.value,r=termReason.value,cy=cycle.value,allowed=true,note="",docs="";
+ if(r==="breach"||r==="needs"){allowed=true;note="RTB lists this ground as available across the selected landlord categories, subject to the required process.";docs=r==="needs"?"Statement required.":"Warning process may be required depending on breach type."}
+ else if(era==="pre"){allowed=true;note="For tenancies created before 1 March 2026, RTB lists six principal grounds including this one.";docs=(r==="sell"||r==="family")?"Statutory declaration required.":(r==="renovate"||r==="use")?"Statutory declaration + statement required.":""}
+ else if(size==="large"){allowed=false;note="For post-1 March 2026 tenancies, RTB says landlords with 4+ tenancies / company landlords cannot use this selected no-fault ground after the first six months.";docs=""}
+ else {
+   if(r==="sell"){allowed=cy==="end";note=allowed?"Small landlords may sell at the end of the 6-year TMD cycle. During the cycle, sale-based termination is limited to qualifying hardship circumstances, which this simple demo does not adjudicate.":"During a 6-year TMD cycle, sale-based termination is only allowed for qualifying undue financial or other hardship; select 'end' for the ordinary end-of-cycle route.";docs="Statutory declaration required."}
+   else if(r==="family"){allowed=cy==="end";note=allowed?"At the end of the 6-year TMD cycle, this ground is available to a small landlord. During the cycle it is limited to qualifying hardship circumstances.":"During the cycle, landlord/immediate-family occupation requires qualifying hardship; this demo does not decide whether hardship is met.";docs="Statutory declaration required."}
+   else if(r==="renovate"||r==="use"){allowed=cy==="end";note=allowed?"RTB says this ground is available to a small landlord at the end of the 6-year TMD cycle.":"RTB says this ground is not an ordinary during-cycle ground for a post-1 Mar 2026 small-landlord tenancy.";docs="Statutory declaration + statement required."}
+ }
+ termResult.innerHTML=`<span class="status ${allowed?"ok":"bad"}">${allowed?"Ground available in selected scenario":"Not available / extra condition needed"}</span><h3>${allowed?"Proceed to notice checks":"Do not generate notice yet"}</h3><div class="muted">${note}</div>${docs?`<div class="explain"><h4>Document requirement</h4><p>${docs}</p></div>`:""}`;
+}
+function toast(m){let t=document.getElementById("toast");t.textContent=m;t.style.display="block";clearTimeout(window.tt);window.tt=setTimeout(()=>t.style.display="none",2000)}
+checkRegistration();feeCalc();rentCalc();marketCheck();noticeCalc();terminationCheck();
+</script>
+</body>
+</html>
